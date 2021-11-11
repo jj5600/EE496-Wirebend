@@ -44,7 +44,7 @@ void setup() {
   tft.fillScreen(BLACK);
 
   //Draw white frame
-  tft.drawRect(0,0,319,240,WHITE);
+  tft.drawRect(0,0,480,320,WHITE);
   
   //Print "Hello" Text
   tft.setCursor(100,30);
@@ -63,8 +63,16 @@ void setup() {
   tft.drawRect(60,180,200,40,WHITE);
   tft.setCursor(80,188);
   tft.setTextColor(WHITE);
-  tft.setTextSize(3);
-  tft.print("WOW");
+  tft.setTextSize(2);
+  tft.print("Forward");
+  
+  //Create Red Button
+  tft.fillRect(60,180, 200, 40, Green);
+  tft.drawRect(60,180,200,40,WHITE);
+  tft.setCursor(80,188);
+  tft.setTextColor(WHITE);
+  tft.setTextSize(2);
+  tft.print("Reverse");
 
 }
 

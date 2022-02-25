@@ -45,7 +45,7 @@ void setup() {
 
 void loop() {
   // all that is missing is led implementation I will work on that shortly, error implementation, adding touchscreen + controls and figuring out how to implement resistors 
-  for(i=0;i<5;i++)
+  for(int i=0;i<5;i++)
   {
     if(count[i]==countM[i])
     {
@@ -59,7 +59,7 @@ void loop() {
           stepM[i]++;
           if(stepM[i]==MAX[i])
           {
-            change(m);
+            change(i);
           }
         }
         else
@@ -67,7 +67,7 @@ void loop() {
           stepM[i]--;
           if(stepM[i]==MIN[i])
           {
-            change(m);
+            change(i);
           }
         }
         if(stepM[i]==startingStep[i])
@@ -99,9 +99,9 @@ void loop() {
 }
 void change(int m){
   dir[m] = ~dir[m];
-  digitalWrite(stepMotorAD[i],dir[i]);
+  digitalWrite(stepMotorAD[m],dir[m]);
 }
-void reset(int m){
+void resetM(int m){
   count[m] = 0;
   MAX[m]=50;
   MIN[m]=-50;
@@ -120,7 +120,7 @@ void stopping()
       start[i]==false;
       flash[i]==true;
     }
-  }`
+  }
 }
 void error(int m)
 {

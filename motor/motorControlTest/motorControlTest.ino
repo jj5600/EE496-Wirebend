@@ -23,7 +23,7 @@ volatile int MAX[5] = {50,50,50,50,50};//max steps in the positive direction, ma
 volatile int MIN[5] = {-50,-50,-50,-50,-50};//min steps in the negative direction, minimum possible should be -50?
 //variables to keep track of cycles and when to stop
 volatile int cycleCount[5] = {0,0,0,0,0};//keeps track of cycle, cycles are checked at starting angle
-volatile int cycleMax[5] = {1000,1000,1000,1000,1000};//keeps track of max angle
+volatile int cycleMax[5] = {10,10,1000,1000,1000};//keeps track of max angle
 
 volatile int motor = 0;//determines what motor is changing mostly used to interact with the screen
 

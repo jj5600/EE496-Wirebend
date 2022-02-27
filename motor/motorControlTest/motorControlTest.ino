@@ -9,11 +9,11 @@ volatile int stepM[5] = {0,0,0,0,0};//recorded step for the stepper motor to kee
 volatile double angle[5] = {0,0,0,0,0};//recorded angle
 //a way to set up a delay between the stepper motors
 volatile int count[5] = {0,0,0,0,0};
-volatile int countM[5] = {3500,3500,3500,3500,3500};//how long it takes for a step to happen, higher it is the longer the delay, if this value decreasses it lowers the delay
+volatile int countM[5] = {100,100,100,100,100};//how long it takes for a step to happen, higher it is the longer the delay, if this value decreasses it lowers the delay
 //boolean values for starting, general movement and direction of the steppper motor
 volatile bool dir[5] = {LOW,LOW,LOW,LOW,LOW};//when this is low it goes clockwise? when this is high it should go counterclockwise? needs testing to make sure
 volatile bool movem[5] = {LOW,LOW,LOW,LOW,LOW};
-volatile bool start[5] ={true,true,false,false,false};//When a motor is supposed to go this should be true, starts off as false
+volatile bool start[5] ={true,false,false,false,false};//When a motor is supposed to go this should be true, starts off as false
 volatile bool select[5] = {false, false, false, false, false};
 volatile bool flash[5] = {false, false, false, false, false};
 volatile bool blinkL[5] = {false, false, false, false, false};

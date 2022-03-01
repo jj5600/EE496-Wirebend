@@ -5,8 +5,8 @@ const int led[5] = {13,14,15,16,17};//led values
 const int stepMotorStop = 2;//for emergency stop
 //variables to keep track of steps and angles
 volatile int startingStep[5] = {0,0,0,0,0};//starting angle of the system
-volatile int stepM[5] = {0,0,0,0,0};//recorded step for the stepper motor to keep track of where the stepper motor is at
-volatile double angle[5] = {0,0,0,0,0};//recorded angle
+int stepM[5] = {0,0,0,0,0};//recorded step for the stepper motor to keep track of where the stepper motor is at
+double angle[5] = {0,0,0,0,0};//recorded angle
 //a way to set up a delay between the stepper motors
 volatile int count[5] = {0,0,0,0,0};
 volatile int countM[5] = {100,100,100,100,100};//how long it takes for a step to happen, higher it is the longer the delay, if this value decreasses it lowers the delay
@@ -49,11 +49,12 @@ void loop() {
   {
     if(count[i]==countM[i])
     {
+      count[i]=0;
       if(start[i])
       {
         digitalWrite(stepMotorAP[i], movem[i]);
         movem[i]=~movem[i];
-        count[i]=0;
+        
         if(dir[i])
         {
           stepM[i]++;

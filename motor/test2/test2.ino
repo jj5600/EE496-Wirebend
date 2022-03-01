@@ -4,7 +4,7 @@ volatile int startingStep[5] = {0,0,0,0,0};//starting angle of the system
 int stepM[5] = {0,0,0,0,0};//recorded step for the stepper motor to keep track of where the stepper motor is at
 double angle[5] = {0,0,0,0,0};//recorded angle
 volatile int count[5] = {0,0,0,0,0};
-volatile int countM[5] = {100,100,100,100,100};//how long it takes for a step to happen, higher it is the longer the delay, if this value decreasses it lowers the delay
+volatile int countM[5] = {200,200,200,200,200};//how long it takes for a step to happen, higher it is the longer the delay, if this value decreasses it lowers the delay
 volatile bool dir[5] = {LOW,LOW,LOW,LOW,LOW};//when this is low it goes clockwise? when this is high it should go counterclockwise? needs testing to make sure
 volatile bool movem[5] = {LOW,LOW,LOW,LOW,LOW};
 volatile bool start[5] ={true,false,false,false,false};//When a motor is supposed to go this should be true, starts off as false
@@ -31,9 +31,9 @@ void setup() {
 void loop() {
  for(int i=0;i<5;i++)
   {
+    count[i]=0;
     if(count[i]==countM[i])
     {
-      count[i]=0;
       if(start[i])
       {
         digitalWrite(stepMotorAP[i], movem[i]);
@@ -68,7 +68,7 @@ void loop() {
   }
    else
     {
-      count[i]++;
+      count[i] = count[i]+1;
     }
     delay(10);
 }

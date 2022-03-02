@@ -1,0 +1,64 @@
+const int stepMotorAD = 3;
+const int stepMotorAP = 4;
+const int stepMotorAS = 6;
+const int stepMotorAE = 7;
+const int stepMotorAInt = 2;
+const int pd = 3500;
+volatile byte AH = LOW;
+volatile byte AL = LOW; 
+//volatile bool dir = LOW;
+void setup() {
+  // put your setup code here, to run once:
+  pinMode(stepMotorAD, OUTPUT);
+  pinMode(stepMotorAP, OUTPUT);
+  //pinMode(stepMotorAInt, INPUT_PULLUP);
+  //attachInterrupt(digitalPinToInterrupt(stepMotorAInt),up,RISING);
+  //attachInterrupt(digitalPinToInterrupt(stepMotorAInt),down,FALLING);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  digitalWrite(stepMotorAS, HIGH);
+  digitalWrite(stepMotorAD, HIGH);
+
+  for (int i = 0; i<220; i++)
+  {
+    //digitalWrite(stepMotorAS, dir);
+    //digitalWrite(stepMotorAD, dir);
+
+    digitalWrite(stepMotorAE,HIGH);
+    digitalWrite(stepMotorAP,HIGH);
+
+    delayMicroseconds(pd);
+    digitalWrite(stepMotorAE,LOW);
+    digitalWrite(stepMotorAP,LOW);
+    delayMicroseconds(pd);
+  }
+  digitalWrite(stepMotorAS,LOW);  // put your main code here, to run repeatedly:
+  digitalWrite(stepMotorAD,LOW);    
+    for (int i = 0; i<220; i++)
+  {
+    //digitalWrite(stepMotorAS, dir);
+    //digitalWrite(stepMotorAD, dir);
+
+    digitalWrite(stepMotorAE, HIGH);
+    digitalWrite(stepMotorAP, HIGH);
+
+    delayMicroseconds(pd);
+    digitalWrite(stepMotorAE,LOW);
+    digitalWrite(stepMotorAP,LOW);
+
+    delayMicroseconds(pd);
+  }
+  
+  
+}
+
+ 
+
+//void up(){
+//  dir = HIGH;
+//}
+//void down(){
+//  dir = LOW;
+//}

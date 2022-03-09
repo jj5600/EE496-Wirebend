@@ -1,0 +1,63 @@
+const int stepMotorAD = 3; // 1
+const int stepMotorAP = 4; //1
+const int stepMotorAS = 6; //2
+const int stepMotorAE = 7; //2
+const int stepMotorAInt = 2;
+const int pd = 4000; //3500 // low PD is faster speed // high pd slower speed
+volatile byte AH = LOW;
+volatile byte AL = LOW; 
+//volatile bool dir = LOW;
+void setup() {
+  // put your setup code here, to run once:
+  pinMode(stepMotorAD, OUTPUT); // motor 1//setting up output pins for Both motors
+  pinMode(stepMotorAP, OUTPUT); //motor 1
+  pinMode(stepMotorAS, OUTPUT); //motor 2
+  pinMode(stepMotorAE, OUTPUT); //motor 2
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  digitalWrite(stepMotorAS, HIGH);
+  digitalWrite(stepMotorAD, HIGH); // set motors to move clockwise
+
+  for (int i = 0; i<110; i++) // clockwise
+  {
+    
+
+    digitalWrite(stepMotorAE,HIGH); // motor 1 high
+    digitalWrite(stepMotorAP,HIGH); // motor 2 high
+
+    delayMicroseconds(pd); // delay
+    digitalWrite(stepMotorAE,LOW); // motor 1 low
+    digitalWrite(stepMotorAP,LOW); // motor 2 low
+    delayMicroseconds(pd); // delay
+  }
+
+  
+  digitalWrite(stepMotorAS,LOW);  // set motors to move counter clockwise
+  digitalWrite(stepMotorAD,LOW); 
+     
+   for (int i = 0; i<110; i++) // counterclock
+{
+    //SAME but oppposite 
+
+    digitalWrite(stepMotorAE, HIGH);
+    digitalWrite(stepMotorAP, HIGH);
+
+    delayMicroseconds(pd);
+    digitalWrite(stepMotorAE,LOW);
+    digitalWrite(stepMotorAP,LOW);
+
+    delayMicroseconds(pd);
+  }
+  
+ 
+}
+ 
+
+//void up(){
+//  dir = HIGH;
+//}
+//void down(){
+//  dir = LOW;
+//}

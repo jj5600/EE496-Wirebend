@@ -56,10 +56,10 @@ serial_data();
 if((start_flag==true)&&(station1_status=="ON"))  //if start button is pressed and station1 button is pressed
  {
   stepper_motor1(); // stepper1 motor function call
-  Serial.print("Fuck it");
+  Serial.print("test1");
   if(counter1>=cycle_count1)  // if counter1 is greater than entered count cycle then reset it.
   {
-    Serial.print("ALFONSO"); 
+    Serial.print("test2"); 
     motor1_speed=0;
     start_angle1=0;
     stop_angle1=0;

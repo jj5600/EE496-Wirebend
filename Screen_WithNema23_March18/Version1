@@ -1,0 +1,420 @@
+#define dirPin1 3     //stepper1 direction_pin
+#define stepPin1 4    //stepper1 step_pin
+#define dirPin2 2   //stepper2 direction_pin
+#define stepPin2 5   //stepper2 step_pin
+#define dirPin3 6    //stepper3 direction_pin
+#define stepPin3 7   //stepper3 step_pin
+#define dirPin4 8    //stepper4 direction_pin
+#define stepPin4 9   //stepper4 step_pin
+#define dirPin5 10   //stepper5 direction_pin
+#define stepPin5 11  //stepper5 step_pin
+#define stepsPerRevolution 10000 //steps per revolution for each motor
+
+String data;   // string variable to store incoming serial data
+bool start_flag=false; // bool variable to store the start and pause status
+
+int motor_speed=0;
+int motor1_speed=0;
+int motor2_speed=0;
+int motor3_speed=0;
+int motor4_speed=0;
+int motor5_speed=0;
+
+int stepperMotorSpeed1=0;
+int stepperMotorSpeed2=0;
+int stepperMotorSpeed3=0;
+int stepperMotorSpeed4=0;
+int stepperMotorSpeed5=0;
+
+float start_angle=0;
+float start_angle1=0;
+float start_angle2=0; 
+float start_angle3=0; 
+float start_angle4=0; 
+float start_angle5=0; 
+ 
+float stop_angle=0;
+float stop_angle1=0;
+float stop_angle2=0;
+float stop_angle3=0;
+float stop_angle4=0;
+float stop_angle5=0;
+
+int cycle_count=0;
+int cycle_count1=0;
+int cycle_count2=0;
+int cycle_count3=0;
+int cycle_count4=0;
+int cycle_count5=0;
+
+int counter=0;
+int counter1=0;
+int counter2=0;
+int counter3=0;
+int counter4=0;
+int counter5=0;
+
+String station1_status;
+String station2_status;
+String station3_status;
+String station4_status;
+String station5_status;
+bool s1=false;
+bool s2=false;
+bool s3=false;
+bool s4=false;
+bool s5=false;
+
+void setup()
+{
+  Serial.begin(9600);
+  Serial1.begin(9600);
+  pinMode(stepPin1, OUTPUT);
+  pinMode(dirPin1, OUTPUT);
+  pinMode(stepPin2, OUTPUT);
+  pinMode(dirPin2, OUTPUT);
+  pinMode(stepPin3, OUTPUT);
+  pinMode(dirPin3, OUTPUT);
+  pinMode(stepPin4, OUTPUT);
+  pinMode(dirPin4, OUTPUT);
+  pinMode(stepPin5, OUTPUT);
+  pinMode(dirPin5, OUTPUT);
+
+}
+void loop() 
+{ 
+serial_data();
+if((start_flag==true)&&(station1_status=="ON"))  //if start button is pressed and station1 button is pressed
+ {
+  stepper_motor1(); // stepper1 motor function call
+  Serial.print("test1");
+  if(counter1>=cycle_count1)  // if counter1 is greater than entered count cycle then reset it.
+  { 
+    motor1_speed=0;
+    start_angle1=0;
+    stop_angle1=0;
+    cycle_count1=0;
+    counter1=0;
+    start_flag=false;
+  }
+ }
+
+
+}
+
+//////////////////////////////////////////////
+void serial_data()
+{
+ while(Serial1.available())  //wait until serial data is available
+    {   
+     if(Serial1.available() > 0) // if available data is greater than zero
+       {
+        data=Serial1.readString(); //Read serial data on Rx1,Tx1
+        Serial.println(data);      // Print serial data
+        if(data.startsWith("START"))  
+        {start_flag=true;}
+        
+       if(data.startsWith("PAUSE"))
+        {start_flag=false;}
+
+        if(data.startsWith("s1"))
+        {
+          s1=true;
+          s2=false;
+          s3=false;
+          s4=false;
+          s5=false;
+        }
+
+        if(data.startsWith("s2"))
+        {
+          s1=false;
+          s2=true;
+          s3=false;
+          s4=false;
+          s5=false;
+        }
+
+        if(data.startsWith("s3"))
+        {
+          s1=false;
+          s2=false;
+          s3=true;
+          s4=false;
+          s5=false;
+        }
+
+        if(data.startsWith("s4"))
+        {
+          s1=false;
+          s2=false;
+          s3=false;
+          s4=true;
+          s5=false;
+        }
+
+        if(data.startsWith("s5"))
+        {
+          s1=false;
+          s2=false;
+          s3=false;
+          s4=false;
+          s5=true;
+        }
+  
+       if(data.startsWith("save"))
+          {
+        int start_angle_index = data.indexOf("start_angle");
+        int stop_angle_index = data.indexOf("stop_angle");
+        int cycle_count_index= data.indexOf("cycle_count");
+        int slider_index= data.indexOf("slider");
+        int station1_index=data.indexOf("station1=");
+        int station2_index=data.indexOf("station2=");
+        int station3_index=data.indexOf("station3=");
+        int station4_index=data.indexOf("station4=");
+        int station5_index=data.indexOf("station5=");
+        
+       String String_start_angle = data.substring(start_angle_index+11, stop_angle_index);
+       start_angle=String_start_angle.toInt();
+       Serial.print("start_angle=");
+       Serial.println(start_angle);
+       //////////////
+       String String_stop_angle = data.substring(stop_angle_index+10,cycle_count_index);
+       stop_angle=String_stop_angle.toInt();
+       Serial.print("stop_angle=");
+       Serial.println(stop_angle);
+       //////////////
+       String String_cycle_count=data.substring(cycle_count_index+11);
+       cycle_count=String_cycle_count.toInt();
+       Serial.print("cycle_count1=");
+       Serial.println(cycle_count);
+       /////////////
+       String String_motor_speed=data.substring(slider_index+6);
+       motor_speed=String_motor_speed.toInt();
+       Serial.print("motor_speed=");
+       Serial.println(motor_speed);
+        /////////////
+       String string_station1=data.substring(station1_index+9,station2_index);
+       station1_status=string_station1;
+       Serial.print("station1_status=");
+       Serial.println(station1_status);
+       //////////////
+       String string_station2=data.substring(station2_index+9,station3_index);
+       station2_status=string_station2;
+       Serial.print("station2_status=");
+       Serial.println(station2_status);
+       //////////////
+       String string_station3=data.substring(station3_index+9,station4_index);
+       station3_status=string_station3;
+       Serial.print("station3_status=");
+       Serial.println(station3_status);
+       /////////////
+       String string_station4=data.substring(station4_index+9,station5_index);
+       station4_status=string_station4;
+       Serial.print("station4_status=");
+       Serial.println(station4_status);
+       /////////////
+       String string_station5=data.substring(station5_index+9);
+       station5_status=string_station5;
+       Serial.print("station5_status=");
+       Serial.println(station5_status);
+        ///////////
+        
+         if(station1_status=="ON")
+          {
+            motor1_speed=motor_speed;
+            start_angle1=start_angle;
+            stop_angle1=stop_angle;
+            cycle_count1=cycle_count;
+          }
+          else
+            {
+            motor1_speed=0;
+            start_angle1=0;
+            stop_angle1=0;
+            cycle_count1=0;
+            }
+            
+           if(station2_status=="ON")
+            {
+            motor2_speed=motor_speed;
+            start_angle2=start_angle;
+            stop_angle2=stop_angle;
+            cycle_count2=cycle_count;
+            }
+          else
+            {
+            motor2_speed=0;
+            start_angle2=0;
+            stop_angle2=0;
+            cycle_count2=0;
+            }
+            
+            if(station3_status=="ON")
+            {
+            motor3_speed=motor_speed;
+            start_angle3=start_angle;
+            stop_angle3=stop_angle;
+            cycle_count3=cycle_count;
+            }
+          else
+            {
+            motor3_speed=0;
+            start_angle3=0;
+            stop_angle3=0;
+            cycle_count3=0;
+            }
+            
+            if(station4_status=="ON")
+            {
+            motor4_speed=motor_speed;
+            start_angle4=start_angle;
+            stop_angle4=stop_angle;
+            cycle_count4=cycle_count;
+            }
+          else
+            {
+            motor4_speed=0;
+            start_angle4=0;
+            stop_angle4=0;
+            cycle_count4=0;
+            }
+            
+            if(station5_status=="ON")
+            {
+            motor5_speed=motor_speed;
+            start_angle5=start_angle;
+            stop_angle5=stop_angle;
+            cycle_count5=cycle_count;
+            }
+          else
+            {
+            motor5_speed=0;
+            start_angle5=0;
+            stop_angle5=0;
+            cycle_count5=0;
+            }
+         }
+        //Serial.print("start_flag=");
+        //Serial.print(start_flag);
+      }
+     }
+   }
+
+ 
+//////////////////////////////////////////////////////////////////
+void stepper_motor1()
+{
+  //while(counter1<=cycle_count1)
+  //{
+  Serial.print("IN WHILE");
+  //serial_data();
+  //if(start_flag==false)
+  //{break;}
+  //if (motor1_speed < 100 ) 
+   //{motor1_speed = 0;}
+   //stepperMotorSpeed1 = map(motor1_speed , 0, 1023, 4000, 0); // map the values of motor speed  0 to 4000 and 1023 to 0
+   for (int i=0 ; i<cycle_count1; i++)
+    {
+      serial_data();
+      step1clockwise();
+      Serial.println("clockwise");
+      serial_data();
+      step1anticlockwise();
+      Serial.println("Anticlockwise");
+      counter1=counter1+1;
+
+    }
+  progress();
+  //counter1=counter1+1;
+  Serial.print("counter1="); 
+  Serial.println(counter1); 
+ //}
+}
+
+//////////////////////////////////////////////////////////////////
+
+
+
+
+///////////////////////////////////////
+void progress()
+{
+if(s1==true)
+    {
+      Serial1.print("t3.txt=");
+      Serial1.print("\""); 
+      Serial1.print(counter1); 
+      Serial1.print("\"");      
+      Serial1.write(0xff);
+      Serial1.write(0xff);
+      Serial1.write(0xff);
+    }
+
+   else if(s2==true)
+    {
+      Serial1.print("t3.txt=");
+      Serial1.print("\""); 
+      Serial1.print(counter2); 
+      Serial1.print("\"");      
+      Serial1.write(0xff);
+      Serial1.write(0xff);
+      Serial1.write(0xff);
+    }
+
+    else if(s3==true)
+    {
+      Serial1.print("t3.txt=");
+      Serial1.print("\""); 
+      Serial1.print(counter3); 
+      Serial1.print("\"");      
+      Serial1.write(0xff);
+      Serial1.write(0xff);
+      Serial1.write(0xff);
+    }
+
+    else if(s4==true)
+    {
+      Serial1.print("t3.txt=");
+      Serial1.print("\""); 
+      Serial1.print(counter4); 
+      Serial1.print("\"");      
+      Serial1.write(0xff);
+      Serial1.write(0xff);
+      Serial1.write(0xff);
+    }
+
+    else if(s5==true)
+    {
+      Serial1.print("t3.txt=");
+      Serial1.print("\""); 
+      Serial1.print(counter5); 
+      Serial1.print("\"");      
+      Serial1.write(0xff);
+      Serial1.write(0xff);
+      Serial1.write(0xff);
+    }
+
+}
+////////////////////////////////
+void step1clockwise()
+{ digitalWrite(dirPin1, LOW);
+  for (int i = 0; i <stepsPerRevolution; i++)     // These four lines result in 1 step:
+  {
+    digitalWrite(stepPin1, HIGH);
+    delayMicroseconds(20);
+    digitalWrite(stepPin1, LOW);
+    delayMicroseconds(20);
+  }
+}
+void step1anticlockwise()
+{ digitalWrite(dirPin1, HIGH);
+  for (int i = 0; i < stepsPerRevolution; i++)     // These four lines result in 1 step:
+  {
+    digitalWrite(stepPin1, HIGH);
+    delayMicroseconds(20);
+    digitalWrite(stepPin1, LOW);
+    delayMicroseconds(20);
+  }
+}
+

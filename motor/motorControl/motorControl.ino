@@ -29,7 +29,7 @@ volatile int motor = 0;//determines what motor is changing mostly used to intera
 void cycle(bool [], int, int, int);
 void resetM(int);
 void stopping();
-
+void set(bool [], bool [], bool);
 void setup() {
   // put your setup code here, to run once:
   pinMode(stepMotorAD[0], OUTPUT);
@@ -56,90 +56,34 @@ void loop() {
         cycleCount[n]++;
       }
     }
-    cycle(start,MIN, MAX,startingStep);
+    cycle(start[],MIN, MAX,startingStep);
   }
  
 }
-
+void set(bool val[],bool check[], bool valSet)
+{
+  for(int i=0; i<5;i++)
+  {
+    if(check[i]){
+      digitalWrite(val[i],valset);
+    }
+  }
+}
+void cycleDir(bool val[],int amount, bool dirB)
+{
+  set(stepMotorAD[],val[],dirB);
+  for(int i=0;i<amount;i++)
+  {
+    set(stepMotorAP[],val[],HIGH);
+    delayMicroseconds(pd);
+    set(stepMotorAP[],val[],LOW);
+    delayMicroseconds(pd);
+  }
+}
 void cycle(bool val[], int minVal, int maxVal, int start){
-  for (int i=0; i<5;i++)
-  {
-    if(val[i])
-    {
-      digitalWrite(stepMotorAD[i],HIGH);
-    }
-  }
-  for (int i = 0; i<(maxVal-start); i++)
-  {
-    for (int n=0;n<5;n++)
-    {
-      if(val[n])
-      {
-        digitalWrite(stepMotorAP[n],HIGH);
-      }
-    }
-    delayMicroseconds(pd);
-    for (int n=0;n<5;n++)
-    {
-      if(val[n])
-      {
-        digitalWrite(stepMotorAP[n],LOW);
-      }
-    }
-    delayMicroseconds(pd);
-  }
-  for (int i=0; i<5;i++)
-  {
-    if(val[i])
-    {
-      digitalWrite(stepMotorAD[i],LOW);
-    }
-  }
-  for (int i = 0; i<(maxVal-minVal); i++)
-  {
-    for (int n=0;n<5;n++)
-    {
-      if(val[n])
-      {
-        digitalWrite(stepMotorAP[n],HIGH);
-      }
-    }
-    delayMicroseconds(pd);
-    for (int n=0;n<5;n++)
-    {
-      if(val[n])
-      {
-        digitalWrite(stepMotorAP[n],LOW);
-      }
-    }
-    delayMicroseconds(pd);
-  }
-  for (int i=0; i<5;i++)
-  {
-    if(val[i])
-    {
-      digitalWrite(stepMotorAD[i],HIGH);
-    }
-  }
-  for (int i = 0; i<(start-minVal); i++)
-  {
-    for (int n=0;n<5;n++)
-    {
-      if(val[n])
-      {
-        digitalWrite(stepMotorAP[n],HIGH);
-      }
-    }
-    delayMicroseconds(pd);
-    for (int n=0;n<5;n++)
-    {
-      if(val[n])
-      {
-        digitalWrite(stepMotorAP[n],LOW);
-      }
-    }
-    delayMicroseconds(pd);
-  }
+  cycleDir(val[], (maxVal-start), HIGH);
+  cycleDir(val[], (maxVal-minVal), LOW);
+  cycleDir(val[], (start-minVal), HIGH);
 }
 void resetM(int m){
   MAX=50;

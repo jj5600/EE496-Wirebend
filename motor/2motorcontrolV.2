@@ -6,7 +6,6 @@ const int stepMotorAInt = 2;
 const int pd = 4000; //3500 // low PD is faster speed // high pd slower speed
 volatile byte AH = LOW;
 volatile byte AL = LOW; 
-//volatile bool dir = LOW;
 void setup() {
   // put your setup code here, to run once:
   pinMode(stepMotorAD, OUTPUT); // motor 1//setting up output pins for Both motors
@@ -55,9 +54,3 @@ void loop() {
 }
  
 
-//void up(){
-//  dir = HIGH;
-//}
-//void down(){
-//  dir = LOW;
-//}

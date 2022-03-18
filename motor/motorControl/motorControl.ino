@@ -29,7 +29,9 @@ volatile int motor = 0;//determines what motor is changing mostly used to intera
 void cycle(bool [], int, int, int);
 void resetM(int);
 void stopping();
-void set(bool [], bool [], bool);
+void set(const int [], bool [], bool);
+void cycleDir(bool [],int , bool );
+
 void setup() {
   // put your setup code here, to run once:
   pinMode(stepMotorAD[0], OUTPUT);
@@ -56,34 +58,34 @@ void loop() {
         cycleCount[n]++;
       }
     }
-    cycle(start[],MIN, MAX,startingStep);
+    cycle(start,MIN, MAX,startingStep);
   }
  
 }
-void set(bool val[],bool check[], bool valSet)
+void set(const int val[],bool check[], bool valSet)
 {
   for(int i=0; i<5;i++)
   {
     if(check[i]){
-      digitalWrite(val[i],valset);
+      digitalWrite(val[i],valSet);
     }
   }
 }
 void cycleDir(bool val[],int amount, bool dirB)
 {
-  set(stepMotorAD[],val[],dirB);
+  set(stepMotorAD,val,dirB);
   for(int i=0;i<amount;i++)
   {
-    set(stepMotorAP[],val[],HIGH);
+    set(stepMotorAP,val,HIGH);
     delayMicroseconds(pd);
-    set(stepMotorAP[],val[],LOW);
+    set(stepMotorAP,val,LOW);
     delayMicroseconds(pd);
   }
 }
 void cycle(bool val[], int minVal, int maxVal, int start){
-  cycleDir(val[], (maxVal-start), HIGH);
-  cycleDir(val[], (maxVal-minVal), LOW);
-  cycleDir(val[], (start-minVal), HIGH);
+  cycleDir(val, (maxVal-start), HIGH);
+  cycleDir(val, (maxVal-minVal), LOW);
+  cycleDir(val, (start-minVal), HIGH);
 }
 void resetM(int m){
   MAX=50;

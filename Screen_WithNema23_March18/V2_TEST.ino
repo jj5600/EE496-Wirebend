@@ -9,7 +9,7 @@
 #define dirPin5 10   //stepper5 direction_pin
 #define stepPin5 11  //stepper5 step_pin
 #define stepsPerRevolution 10000 //steps per revolution for each motor
-
+// CANT STOP WONT STOP
 String data;   // string variable to store incoming serial data
 bool start_flag=false; // bool variable to store the start and pause status
 

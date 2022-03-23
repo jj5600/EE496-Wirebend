@@ -1,0 +1,51 @@
+#define HALL_SENSOR      3
+#define DIR      10
+#define STEP      11
+int pd = 4000;
+ 
+// Direction Variable
+boolean setdir = LOW;
+ 
+void homefunction() {
+  // Set motor speed pulse duration
+  int pd = 4000;
+ 
+  // Move motor until home position reached
+  while (digitalRead(HALL_SENSOR) == 1) {
+ 
+    digitalWrite(DIR, setdir);
+    digitalWrite(STEP, HIGH);
+    delayMicroseconds(pd);
+    digitalWrite(STEP, LOW);
+    delayMicroseconds(pd);
+  }
+ 
+}
+ 
+void setup() {
+ 
+  // Setup the stepper controller pins as Outputs
+  pinMode(DIR, OUTPUT);
+  pinMode(STEP, OUTPUT);
+ 
+  // Setup the Hall Effect switch as an Input
+  pinMode(HALL_SENSOR, INPUT);
+ 
+  // Home the motor
+  homefunction();
+ 
+}
+ 
+void loop() {
+ 
+    digitalWrite(DIR,setdir);
+    digitalWrite(STEP,HIGH);
+    delayMicroseconds(pd);
+    digitalWrite(STEP,LOW);
+    delayMicroseconds(pd);
+
+    if (HALL_SENSOR == HIGH){
+        pd = 0;
+    }
+ 
+}

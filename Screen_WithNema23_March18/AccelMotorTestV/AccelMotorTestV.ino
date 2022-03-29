@@ -410,7 +410,7 @@ void stepper_motor1()
   //if (motor1_speed < 100 ) 
    //{motor1_speed = 0;}
    //stepperMotorSpeed1 = map(motor1_speed , 0, 1023, 4000, 0); // map the values of motor speed  0 to 4000 and 1023 to 0
-   motor1.setCurrentPosition();
+   motor1.setCurrentPosition(0);
    motor1.setMaxSpeed(motor1_speed);
    for (int i=0 ; i<cycle_count1; i++)
     {
@@ -419,13 +419,26 @@ void stepper_motor1()
          myTime = millis();
 
    Serial.println(myTime); // prints time since program started
+//      motor1.moveTo(stop_angle1); 
+//      motor1.setSpeed(motor1_speed); 
+//`     while (stepper.currentPosition() != stepper.targetPosition()) { 
+//        motor1.runToPosition();
+//      }
       motor1.runToNewPosition(stop_angle1);
-      //Serial.println("clockwise");
+      Serial.println("clockwise");
       serial_data();
-      motor1.runToNewPosition(start_angle1);
-      motor1.runToNewPosition(0);
-      //Serial.println("Anticlockwise");
-      counter1=counter1+1;
+//      motor1.moveTo(start_angle1);  
+//`     while (stepper.currentPosition() != stepper.targetPosition()) { 
+//        motor1.runToPosition();
+//      }
+       motor1.runToNewPosition(start_angle1);
+//      motor1.moveTo(0);  
+//`     while (stepper.currentPosition() != stepper.targetPosition()) { 
+//        motor1.runToPosition();
+//      }
+       motor1.runToNewPosition(0);
+        //Serial.println("Anticlockwise");
+       counter1=counter1+1;
     }
     
   progress();
